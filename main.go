@@ -24,13 +24,23 @@ func getAllTasks(c *gin.Context) {
 	c.JSON(200, tasks)
 }
 
+func createTask(c *gin.Context) {
+	var newTask task
+
+	if err := c.BindJSON(&newTask); err != nil {
+		return
+	}
+
+	tasks = append(tasks, newTask)
+	c.IndentedJSON(200, tasks)
+}
+
 func main() {
 
 	server := gin.Default()
 
 	server.GET("/tasks", getAllTasks)
-	server.POST("/tasks")
-	server.DELETE("/tasks/{}")
+	server.POST("/tasks", createTask)
 
-	server.Run("localhost:30080")
+	server.Run("localhost:8080")
 }
